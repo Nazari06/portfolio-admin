@@ -122,21 +122,24 @@
               <tr role="row" class="odd" v-for="(portfolio,index) in portfolios" :key="index">
                 <td class="text-center pt-2">
                   <div class="custom-checkbox custom-control">
-                    <input
-                      type="checkbox"
-                      data-checkboxes="mygroup"
-                      class="custom-control-input"
-                      id="checkbox-3"
-                    />
-                    <label for="checkbox-3" class="custom-control-label"
+                    <input type="checkbox" :value="portfolio.id" data-checkboxes="mygroup" class="custom-control-input" :id="portfolio.id"/>
+                    <label :for="portfolio.id " class="custom-control-label"
                       >&nbsp;</label>
                   </div>
                 </td>
                 <td class="sorting_1">{{ portfolio.title }}</td>
+                <td>{{ portfolio.description.slice(0, 30) }}
+                  <i class="text-muted">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-more-horizontal">
+                      <circle cx="12" cy="12" r="1"></circle>
+                      <circle cx="19" cy="12" r="1"></circle>
+                      <circle cx="5" cy="12" r="1"></circle>
+                    </svg>
+                  </i>
+                </td>
                 <td>
                   <img :alt="portfolio.title " :src="portfolio.image" width="35" class="image image-rounded"/>
                 </td>
-                <td>2018-01-29</td>
                 <td>
                   <div class="badge badge-info badge-shadow">
                     {{ portfolio.start_date }}
@@ -234,10 +237,13 @@ export default {
   mounted() {
     this.getPortfolio();
   },
+  created() {
+    this.getPortfolio();
+  },
   methods: {
-    getPortfolio(){
+    async getPortfolio(){
       const url = 'http://localhost:8000/api/get_portfolio';
-      axios.get(url).then((response)=>{
+      await axios.get(url).then((response)=>{
         console.log(response.data);
         this.portfolios= response.data;
       });
@@ -257,10 +263,11 @@ export default {
       axios.delete(url).then((response)=>{
         if(response.status ==200){
           Swal.fire({
-                title: 'Deleted!',
-                text: response.message,
+                title: 'Successfully deleted',
                 icon: 'success',
                 confirmButton: false,
+                toast:true,
+                position:'top-end',
                 timer:4000,
                 timerProgressBar:true,
                 showConfirmButton:false,
