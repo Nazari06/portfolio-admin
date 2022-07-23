@@ -127,18 +127,13 @@
                       >&nbsp;</label>
                   </div>
                 </td>
-                <td class="sorting_1">{{ portfolio.title }}</td>
-                <td>{{ portfolio.description.slice(0, 30) }}
-                  <i class="text-muted">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-more-horizontal">
-                      <circle cx="12" cy="12" r="1"></circle>
-                      <circle cx="19" cy="12" r="1"></circle>
-                      <circle cx="5" cy="12" r="1"></circle>
-                    </svg>
-                  </i>
+                <td>{{ portfolio.title }}</td>
+                <td v-if="portfolio.description">{{ portfolio.description.slice(0, 30) }}<span v-if="portfolio.description.length>30">..</span>
                 </td>
+                <td v-else>No description!</td>
                 <td>
-                  <img :alt="portfolio.title " :src="portfolio.image" width="35" class="image image-rounded"/>
+                  <img :alt="portfolio.title " :src="portfolio.image" width="35" v-if="portfolio.image" class="image image-rounded"/>
+                  <span v-else>No image!</span>
                 </td>
                 <td>
                   <div class="badge badge-info badge-shadow">
